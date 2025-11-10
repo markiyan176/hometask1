@@ -71,21 +71,16 @@ Vagrant.configure("2") do |config|
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    # Встановлення репозиторію EPEL та Nginx
     sudo yum install -y epel-release 
     sudo yum install -y nginx 
 
-    # Відключення SELinux (як вимагає завдання)
     sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
     
-    # Створення тестового вмісту (якщо потрібно)
     echo "<h1>Welcome to Nginx on CentOS!</h1>" | sudo tee /usr/share/nginx/html/index.html
 
-    # Запуск Nginx та налаштування автозапуску
     sudo systemctl start nginx
     sudo systemctl enable nginx
     
-    # Зупинка Firewalld (як вимагає завдання)
     sudo systemctl stop firewalld
     sudo systemctl disable firewalld
   SHELL
